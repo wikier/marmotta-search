@@ -1,0 +1,227 @@
+/**
+ * Copyright (C) 2013 Salzburg Research.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+body {
+    margin:0;
+    padding:0;
+    font-family: arial,sans-serif;
+}
+
+img {
+    border: none;
+}
+
+#header {
+    padding-top:1px;
+    padding-bottom:1px;
+    width: 100%;
+    border-bottom: 1px solid #999999;
+}
+
+#header a {
+   margin:0.5em;
+   font-size: 13px;
+}
+
+#main {
+    width: 1200px;
+    min-height:200px;
+    margin: 0 auto;
+}
+
+#right {
+    width:300px;
+    float:right;
+}
+
+#right h2 {
+    color: #08468F;
+    font-size: 16px;
+    margin: 0 0 3px;
+}
+
+#center {
+    width:900px;
+}
+
+#top{
+    width:100%;
+    height: 70px;
+    margin-top:20px;
+    position: relative;
+}
+
+#top-right {
+    float: right;
+    width: 680px;
+}
+
+#top-right input:focus {
+  outline: none;
+}
+
+#top-right #text {
+    font-size: 14px;
+    height: 26px;
+    padding-right: 35px;
+    width: 562px;
+}
+
+#top-right #button {
+    height:34px;
+    width:40px;
+    background:url("../img/search.png") 7px 2px #eee no-repeat;
+    border:none;
+    border-bottom:1px solid #d3d3d3;
+    border-right:1px solid gray;
+    border-top:1px solid gray;
+    cursor: pointer;
+}
+
+.tagcloud_item {
+    margin-right:3px;
+}
+
+#top-left {
+    float: left;
+    width: 199px;
+}
+
+#middle {
+    width:100%;
+    min-height:120px;
+}
+
+#middle-right {
+    float: right;
+    width: 700px;
+    min-height:170px;
+}
+
+#middle-left {
+    float: left;
+    width: 194px;
+    padding-left: 5px;
+    border-right:1px solid #999999;
+    min-height:120px;
+    font-size:13px;
+}
+
+#footer {
+    font-size:12px;
+    width:100%;
+    text-align:center;
+    color:#999;
+}
+#footer a {
+    color: gray;
+}
+
+.clear {
+    clear: both;
+}
+
+.facet {
+   margin-bottom:10px;
+}
+
+#results {
+    min-height:100px;
+    padding:0 20px 10px;
+}
+#paging  {
+    border-top: 1px solid #999999;
+    margin: 20px 100px;
+}
+
+#middle-left h2 {
+    font-size:16px;
+    color: #08468F;
+    margin:0;
+    margin-bottom:3px;
+    margin-top:0;
+}
+
+#paging {
+    text-align:center;
+    font-size:13px;
+    padding-top: 3px;
+}
+
+#paging a{
+    color:#08468F;
+    text-decoration:none;
+}
+
+#paging a:hover{
+    text-decoration:underline;
+}
+
+#paging li{
+    list-style-type: none;
+    display: inline;
+}
+
+#pager-header {
+    font-size:12px;
+    color: #08468F;
+    margin-top:5px;
+}
+
+.pager-current {
+    color: black;
+    font-weight:bold;
+}
+
+.result p {
+    font-size:13px;
+    margin:0;
+    margin-bottom:10px;
+}
+
+.result h2 {
+    font-size:18px;
+    margin:0;
+    margin-bottom:3px;
+    color:#08468F;
+}
+
+.result h4 {
+    font-size:10px;
+    margin:0;
+    margin-bottom:5px;
+    color:gray;
+}
+
+.result p em {
+	background-color: rgba(255,255,0,0.5);
+	font-style: normal;
+}
+
+#selection li{
+   list-style-type: none;
+}
+
+.selection-active {
+    margin-bottom: 10px;
+}
+
+#reset {
+    position: absolute;
+    right: 80px;
+    top: 5px;
+    z-index: 100;
+    cursor:pointer;
+}

@@ -1,0 +1,345 @@
+<!--
+
+    Copyright (C) 2013 Salzburg Research.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+         http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<!--###BEGIN_HEAD###-->
+
+    <title>LMF Search Demonstrator</title>
+    <link rel="search" type="application/opensearchdescription+xml" title="LMF Search" href="http://localhost:8080/KiWi2/solr/ui/google_search.xml">
+    <link REL="SHORTCUT ICON" HREF="img/icon-small.ico">
+    <link rel="stylesheet" type="text/css" href="css/style.css" media="screen" />
+    <!--<link rel="stylesheet" type="text/css" href="css/ui/smoothness/jquery-ui.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="css/ui/smoothness/ui.theme.css" media="screen" />-->
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+    <script type="text/javascript" src="js/ajax-solr/core/Core.js"></script>
+    <script type="text/javascript" src="js/ajax-solr/core/AbstractManager.js"></script>
+    <script type="text/javascript" src="js/ajax-solr/managers/Manager.jquery.js"></script>
+    <script type="text/javascript" src="js/ajax-solr/core/Parameter.js"></script>
+    <script type="text/javascript" src="js/ajax-solr/core/ParameterStore.js"></script>
+    <script type="text/javascript" src="js/ajax-solr/core/AbstractWidget.js"></script>
+    <script type="text/javascript" src="js/kiwi/widgets/ResultWidget.js"></script>
+    <script type="text/javascript" src="js/kiwi/themes/kiwi.theme.js"></script>
+    <script type="text/javascript" src="js/ajax-solr/helpers/jquery/ajaxsolr.theme.js"></script>
+    <script type="text/javascript" src="js/ajax-solr/core/AbstractFacetWidget.js"></script>
+    <script type="text/javascript" src="js/ajax-solr/widgets/jquery/PagerWidget.js"></script>
+    <script type="text/javascript" src="js/kiwi/widgets/TagCloudWidget.js"></script>
+    <script type="text/javascript" src="js/kiwi/widgets/TextWidget.js"></script>
+    <script type="text/javascript" src="js/kiwi/widgets/CurrentSearchWidget.js"></script>
+    <!--<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="js/kiwi/widgets/CalendarWidget.js"></script>-->
+    <script type="text/javascript" src="js/ajax-solr/helpers/ajaxsolr.support.js"></script>
+    <script type="text/javascript" src="js/ajax-solr/helpers/ajaxsolr.theme.js"></script>
+    <script type="text/javascript" src="js/kiwi/widgets/CountryCodeWidget.js"></script>
+    <script type="text/javascript" src="js/kiwi/widgets/ChartWidget.js"></script>
+    <script type="text/javascript" src="js/dygraph/dygraph-combined.js"></script>
+    <script type="text/javascript" src="js/kiwi/widgets/TimeChartWidget.js"></script>
+    <script type='text/javascript' src='http://maps.googleapis.com/maps/api/js?sensor=false&libraries=geometry'></script>
+    <script type="text/javascript" src="js/kiwi/widgets/MapWidget.js"></script>
+
+    <script type="text/javascript">
+        //config vars
+        var lang = "en";
+        var baseURI = "";
+        $(function() {
+            var uri = parent.location.href;
+            uri = uri.substring(0,uri.lastIndexOf("/"));
+            uri = uri.substring(0,uri.lastIndexOf("/"));
+            baseURI = uri.substring(0,uri.lastIndexOf("/"));
+        });
+
+    </script>
+
+    <script type="text/javascript">
+
+      var pagesize = 10;
+      var sort = 'created desc';
+      var appendix ='';
+
+      var startDate = "2005-01-01T00:00:00.000Z";
+      var endDate =   "2011-12-31T00:00:00.000Z";
+
+      var Manager;
+      (function($){
+          $(function () {
+              Manager = new AjaxSolr.Manager({
+                solrUrl: baseURI+'/solr/stanbol/'
+              });
+
+              Manager.addWidget(new AjaxSolr.ResultWidget({
+                id: 'result',
+                target: '#results'
+              }));
+
+
+               Manager.addWidget(new AjaxSolr.TagcloudWidget({
+                 id: 'person',
+                 target: '#person',
+                 field: 'person'
+              }));
+
+               Manager.addWidget(new AjaxSolr.TagcloudWidget({
+                 id: 'ort',
+                 target: '#ort',
+                 field: 'location'
+              }));
+
+               Manager.addWidget(new AjaxSolr.TagcloudWidget({
+                 id: 'tag',
+                 target: '#tag',
+                 field: 'tag'
+              }));
+
+               Manager.addWidget(new AjaxSolr.TagcloudWidget({
+                   id: 'company',
+                   target: '#company',
+                   field: 'company'
+                }));
+               Manager.addWidget(new AjaxSolr.TagcloudWidget({
+                   id: 'other',
+                   target: '#other',
+                   field: 'other'
+                }));
+               
+              Manager.addWidget(new AjaxSolr.TimeChartWidget({
+                  id: 'chart',
+                  target: '#chart',
+                  field: '{!tag=dt}date'
+               }));
+              
+              Manager.addWidget(new AjaxSolr.MapWidget({
+            	  id: 'map',
+            	  target: '#map',
+            	  field: ['lat', 'long']
+              }));
+
+            Manager.addWidget(new AjaxSolr.CurrentSearchWidget({
+                id: 'currentsearch',
+                target: '#selection',
+                mappers: {"tag":"tag"},
+                image: {"remove":"img/remove.png"}
+            }));
+
+              Manager.addWidget(new AjaxSolr.PagerWidget({
+                id: 'pager',
+                target: '#paging',
+                prevLabel: '&lt;',
+                nextLabel: '&gt;',
+                pagesize: pagesize,
+                innerWindow: 1,
+                renderHeader: function (perPage, offset, total) {
+                  if(total==0) {
+                    $('#pager-header').html("");
+                  } else {
+                    $('#pager-header').html($('<span/>').text(Math.min(total, offset + 1) + ' to ' + Math.min(total, offset + perPage) + ' of ' + total));
+                  }
+                }
+              }));
+
+
+              Manager.addWidget(new AjaxSolr.TextWidget({
+                 id: 'text',
+                 target: '#query',
+                 field: 'title_id',
+                 appendix: appendix
+              }));
+
+              Manager.init();
+
+              //query
+              Manager.store.addByValue('facet',true);
+              Manager.store.addByValue('facet.field',[ 'tag','location', 'person', 'countrycode', 'company', 'other']);
+              Manager.store.addByValue('fl',['id','title','summary','uri','date','lat','long'])
+              Manager.store.addByValue('json.nl', 'map');
+              Manager.store.addByValue('facet.mincount', 1);
+              Manager.store.addByValue('facet.sort','count');
+              Manager.store.addByValue('facet.limit',10);
+              Manager.store.addByValue('rows',pagesize);
+              Manager.store.addByValue('sort','score desc');
+              Manager.store.addByValue('facet.date','date');
+              Manager.store.addByValue('facet.date.start',startDate+'/DAY');
+              Manager.store.addByValue('facet.date.end',endDate+'/DAY+1DAY');
+              Manager.store.addByValue('facet.date.gap','+1DAY');
+
+              Manager.store.addByValue('hl','true');
+              Manager.store.addByValue('hl.fl', ['title','summary']);
+              Manager.store.addByValue('hl.fragsize', 1000);
+              Manager.store.addByValue('hl.simple.pre', '<span style="background-color: yellow;">');
+              Manager.store.addByValue('hl.simple.post', '</span>');
+              Manager.store.addByValue('f.summary.hl.alternateField', "summary");
+              Manager.store.addByValue('f.title.hl.alternateField', "title");
+              Manager.store.addByValue("hl.maxAlternateFieldLength", 1000)
+
+
+              queryUrlParams();
+
+          });
+      })(jQuery);
+
+      function setLanguage(value) {
+          Manager.store.remove('lang');
+          if(value!="") {
+            Manager.store.addByValue('lang', value);
+          }
+      }
+
+      $.extend({
+           getUrlVars: function() {
+               var vars = [], hash;
+               var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+               for (var i = 0; i < hashes.length; i++) {
+                   hash = hashes[i].split('=');
+                   vars.push(hash[0]);
+                   vars[hash[0]] = hash[1];
+               }
+               return vars;
+           },
+           getUrlVar: function(name) {
+               return $.getUrlVars()[name];
+           }
+       });
+
+      $.fn.showIf = function (condition) {
+                if (condition) {
+                    return this.show();
+                } else {
+                    return this.hide();
+                }
+       }
+
+      function queryUrlParams() {
+         var q = $.getUrlVar("q");
+         if(q!=undefined && q!="") {
+             q=decodeURIComponent(q);
+             Manager.store.addByValue('q','(+'+q+'+)'+appendix);
+             $("#text").val(q);
+             var lang = $.getUrlVar("lang");
+             if(lang!=undefined && lang!="") {
+                $("#lang_selector").val(lang);
+                Manager.store.addByValue('lang',lang);
+             }
+             Manager.doRequest();
+         }
+      }
+
+  </script>
+<!--###END_HEAD###-->
+  
+</head>
+<body>
+
+	<div id="header">
+        <table cellpadding="0" cellspacing="0" style="width:100%">
+            <tr>
+                <td align="left">
+                    <a href="../../">Home</a>
+                </td>
+                <td align="right" style="padding-right:10px;">
+                </td>
+            </tr>
+        </table>
+    </div> 
+    <!--###BEGIN_CONTENT###-->
+    <div id="titlemap" style="display:none;left: 0;background-color: white;border: 1px solid black;position: absolute;top: 0;width:200px;height:200px;z-index: 10;padding:1px;box-shadow: 0 0 1em black; ">
+        <div id="map_canvas" style="width:100%;height:100%"></div>
+        <img style='position:absolute;top:-5px;right:-5px;z-index:1000;cursor:pointer' onclick="$(this).parent().hide()" src="img/close.gif"/>
+    </div>
+    <div id="main">
+        <div id="right">
+            <div style="margin-top:70px;">
+               <h2>Map</h2>
+               <div id="map" class="facet" style="width: 194px; height: 200px;">
+                   -
+               </div>
+            </div>
+            <div style="margin-top:20px; width: 194px; height: 200px;">
+               <h2>Chart</h2>
+               <div id="chart" class="facet">
+                   -
+               </div>
+            </div>
+        </div>
+        <div id="center">
+        <div id="top">
+            <div id="top-right">
+                <table id="query" cellpadding="0" cellspacing="0">
+                    <tr>
+                        <td>
+                           <input type="text" id="text">
+                           <img id="reset" src="img/reset.gif" title="reset search">
+                        </td>
+                        <td>
+                           <input type="button" id="button" title="run search" >
+                        </td>
+                        <td><img src="img/ajax-loader.gif" style="display:none;margin-left: 10px;" id="loader"></td>
+                    </tr>
+                </table>
+                <div id="pager-header"></div>
+            </div>
+            <div id="top-left">
+               <img src="img/logo.png" alt="Search">
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div id="middle">
+            <div id="middle-right">
+               <div id="results">No results so far</div>
+               <div id="paging">
+                   <ul id="pager"></ul>
+               </div>
+               <div id="footer">
+                 powered by <a href="http://www.newmedialab.at">SNML-TNG</a> and <a href="https://github.com/evolvingweb/ajax-solr">AjaxSolr</a>
+               </div>
+            </div>
+            <div id="middle-left">
+               <div id="selection"></div>
+
+               <h2>Person</h2>
+               <div id="person" class="facet">
+                   -
+               </div>
+
+<!--                <h2>Tag</h2>
+               <div id="tag" class="facet">
+                   -
+               </div>
+
+ -->               <h2>Location</h2>
+               <div id="ort" class="facet">
+                   -
+               </div>
+
+               <h2>Organisation</h2>
+               <div id="company" class="facet">
+                   -
+               </div>
+               <h2>Other</h2>
+               <div id="other" class="facet">
+                   -
+               </div>
+
+            </div>
+            <div class="clear"></div>
+        </div>
+        </div>
+    </div>
+  <!--###END_CONTENT###-->
+    
+</body>
+</html>

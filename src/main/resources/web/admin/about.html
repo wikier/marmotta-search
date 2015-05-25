@@ -1,0 +1,149 @@
+<!--
+
+    Copyright (C) 2013 Salzburg Research.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+         http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<html>
+<head>
+    <!--###BEGIN_HEAD###-->
+    <title>Semantic Search</title>
+    <!--###END_HEAD###-->
+</head>
+<body>
+<!--###BEGIN_CONTENT###-->
+<h1><a name="Introduction"></a>Introduction<a class="section_anchor" href="#Introduction"></a></h1>
+
+<p>All resources stored in the Linked Media Framework are indexed in the semantic search component that uses Apache SOLR
+    as its backend and creates a search index over selected properties of the resources. The semantic search component
+    extends SOLR by some semantic capabilities, but it is fully API compatible and you can use any SOLR client library
+    to access the LMF Search (e.g. AjaxSOLR). </p>
+
+<p>The LMF semantic search component is capable of handling several different search configurations at the same time
+    using the SOLR multi-core functionality. In this way, a LMF installation can be used for offering different
+    perspectives on the data managed by it. </p>
+
+<h2><a name="Configuring_Semantic_Search"></a>Configuring Semantic Search<a class="section_anchor"
+                                                                            href="#Configuring_Semantic_Search"></a>
+</h2>
+
+<p>Search over resources will always be domain-specific and will need to take into account the schema of the data.
+    Therefore, the semantic search component provides only very simple and straightforward search functionality by
+    default for three typical generic cases of metadata: </p>
+<ul>
+    <li><strong>rdf</strong>: takes into account rdfs:label and rdfs:comment properties of resources and stores them in
+        the search index
+    </li>
+    <li><strong>dc</strong>: takes into account dc:title and dc:description properties from the Dublin Core schema and
+        stores them in the search index
+    </li>
+    <li><strong>skos</strong>: takes into account skos:prefLabel, skos:altLabel, and skos:definition properties from the
+        SKOS schema and stores them in the search index.
+    </li>
+</ul>
+<p></p>
+
+<p>To adapt the search component to your specific domain, the LMF Admin Interface offers the possibility to define
+    new cores using <a href="http://marmotta.incubator.apache.org/ldpath/introduction.html"></a>LDPath</a>.
+    An LDPath Program is a set of rules that map index fields to RDF properties or paths of RDF properties. 
+    For example, the following program (rdf) defines four fields (title, summary, tag, type): </p>
+<pre class="prettyprint"><span class="pln">&nbsp; </span><span class="lit">@prefix</span><span
+        class="pln"> hg </span><span class="pun">:</span><span class="pln"> </span><span class="pun">&lt;</span><span
+        class="pln">http</span><span class="pun">:</span><span class="com">//www.holygoat.co.uk/owl/redwood/0.1/tags/&gt; ;</span><span
+        class="pln"><br>&nbsp; title &nbsp; </span><span class="pun">=</span><span class="pln"> rdfs</span><span
+        class="pun">:</span><span class="pln">label </span><span class="pun">::</span><span class="pln"> xsd</span><span
+        class="pun">:</span><span class="kwd">string</span><span class="pln"> </span><span class="pun">;</span><span
+        class="pln"><br>&nbsp; summary </span><span class="pun">=</span><span class="pln"> rdfs</span><span class="pun">:</span><span
+        class="pln">comment </span><span class="pun">::</span><span class="pln"> lmf</span><span
+        class="pun">:</span><span class="pln">text </span><span class="pun">;</span><span class="pln"><br>&nbsp; tag &nbsp; &nbsp; </span><span
+        class="pun">=</span><span class="pln"> hg</span><span class="pun">:</span><span
+        class="pln">taggedWithTag </span><span class="pun">/</span><span class="pln"> hg</span><span
+        class="pun">:</span><span class="pln">name </span><span class="pun">::</span><span class="pln"> xsd</span><span
+        class="pun">:</span><span class="kwd">string</span><span class="pln"> </span><span class="pun">;</span><span
+        class="pln"><br>&nbsp; type &nbsp; &nbsp;</span><span class="pun">=</span><span class="pln"> rdf</span><span
+        class="pun">:</span><span class="pln">type </span><span class="pun">::</span><span class="pln"> xsd</span><span
+        class="pun">:</span><span class="pln">anyURI </span><span class="pun">;</span></pre>
+
+<p>LDPath is a subproject of <a href="http://marmotta.incubator.apache.org">Apache Marmotta</a>; where you can check
+the <a href="http://marmotta.incubator.apache.org/ldpath/language.html">LDPath language specification</a>. </p>
+
+<p>In the most simple case (e.g. title), the rule maps an index field to exactly one RDF property. In more complex
+    cases, the rule allows to follow a path of RDF properties; e.g. in the "tag" field above, the rule would start at
+    the current resource and follow the hg:taggedWithTag property, and from there it will follow the hg:name property
+    and store it in the index. </p>
+
+<p>LDPath programs can be uploaded by the SOLR Cores Webservice available under <tt>/solr/cores</tt>. It
+    supports the following operations: </p>
+<ul>
+    <li><tt>/solr/cores/{name}</tt> uploads an RDF path program and creates a new search index (SOLR
+        core) with the name given as path argument; all resources will automatically be reindexed in the new core. If
+        the core already exists, returns a <tt>302 exists</tt> and does nothing.
+    </li>
+    <li><tt>/solr/cores/{name}</tt> remove the search index (SOLR core) with the name given as path
+        argument; will delete all index files and the path program from the system. Returns <tt>404 Not Found</tt> if
+        the core does not exist
+    </li>
+    <li><tt>/solr/cores/{name}/enable</tt> enables the (disabled) search index/core in the system;
+        will trigger reindexing like creating a new core, because otherwise the consistency of the index cannot be
+        guaranteed
+    </li>
+    <li><tt>/solr/cores/{name}/disable</tt> disables the (enabled) search index/core in the system
+        without deleting its index files or configuration
+    </li>
+</ul>
+<p></p>
+
+<h1><a name="Testing_Search"></a>Testing Search<a class="section_anchor" href="#Testing_Search"></a></h1>
+
+<p>The "Query &amp; Search" tab in the admin interface offers you to immediately try out the semantic search component
+    by entering the search into the "Query Explorer" and pressing the "Run" button. </p>
+
+<p>A good start is to enter the query <tt>*:*</tt> and let it execute. This search will list you all indexed resources
+    together with their field values. Try adding a simple rule to the shortcuts, upload and reindex and then run the
+    search again. You will see how the new field has been added to the search results. </p>
+
+<h1><a name="Using_and_Implementing_Search"></a>Using and Implementing Search<a class="section_anchor"
+                                                                                href="#Using_and_Implementing_Search"></a>
+</h1>
+
+<p>The semantic search component can be used with any SOLR client library. A list of SOLR client libraries is
+    <a href="http://wiki.apache.org/solr/IntegratingSolr">available</a> . Note that
+    the LMF only offers the search functionality but not the indexing functionality of existing clients. </p>
+
+<p>Bundled with the Linked Media Framework comes an exemplary implementation of a Semantic Search interface in pure HTML
+    and Javascript using the AjaxSOLR library. The interface is accessible via the <a href="editor.html">editor</a>.
+    Given the right kind of data, it also demonstrates how facetting over metadata properties can be used to display
+    additional information in widgets, like a map or a timeline. </p>
+
+<p>In case you want to offer a customised search interface for your application scenario, you can copy the bundled
+    Search UI implementation and quickly adapt it to your requirements. In this way we have already implemented several
+    search demonstrators. </p>
+
+<p>A typical approach to using the LMF as a Semantic Search server is to:</p>
+<ul>
+    <li>Write an importer for the data you intend to index; this importer should map content and metadata fields to RDF
+        properties of resources, preferrably conforming to a certain schema or ontology; an example can be found in the
+        <a href="https://code.google.com/r/yuanzhi0788-lmf/source/browse/lmf-sn/src/main/java/at/newmedialab/sn/services/importer/SNImporterImpl.java?spec=svn64af24e34062e316bccc5dd5ac220dc074f701be&r=64af24e34062e316bccc5dd5ac220dc074f701be">SNImporterImpl.java</a> 
+        file, which imports a specific XML syntax of <a href="http://www.salzburg.com/">Salzburger Nachrichten</a>,
+        one of the scenarios os <a href="http://www.newmedialab.at">SNML</a> where LMF is being developed.
+    </li>
+    <li>Write a shortcut program that maps certain paths to index fields</li>
+    <li>Adapt the Search UI according to the data you have imported by modifying / adding facets to display, configuring
+        widgets, and adding query parameters to the search string (e.g. the type)
+    </li>
+</ul>
+<p></p>
+<!--###END_CONTENT###-->
+</body>
+</html>

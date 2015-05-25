@@ -1,0 +1,199 @@
+<!--
+
+    Copyright (C) 2013 Salzburg Research.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+         http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<!DOCTYPE html>
+<!--
+  ~ Copyright (c) 2012 Salzburg Research.
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<html>
+<head>
+  <meta charset='utf-8'>
+
+  <title>szabyg/vie-annotation-bookmarklet @ GitHub</title>
+
+  <style type="text/css">
+    body {
+      margin-top: 1.0em;
+      background-color: #ffffff;
+      font-family: Helvetica, Arial, FreeSans, san-serif;
+      color: #000000;
+    }
+    #container {
+      margin: 0 auto;
+      width: 700px;
+    }
+    h1 { font-size: 3.8em; color: #000000; margin-bottom: 3px; }
+    h1 .small { font-size: 0.4em; }
+    h1 a { text-decoration: none }
+    h2 { font-size: 1.5em; color: #000000; }
+    h3 { text-align: center; color: #000000; }
+    a { color: #000000; }
+    .description { font-size: 1.2em; margin-bottom: 30px; margin-top: 30px; font-style: italic;}
+    .download { float: right; }
+    pre { background: #000; color: #fff; padding: 15px;}
+    hr { border: 0; width: 80%; border-bottom: 1px solid #aaa}
+    .footer { text-align:center; padding-top:30px; font-style: italic; }
+	.bookmarklet {
+		border: 1px solid #aaa;
+		background-color: #ddd;
+	}
+  </style>
+</head>
+
+<body>
+  <a href="http://github.com/szabyg/vie-annotation-bookmarklet"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
+
+  <div id="container">
+
+    <div class="download">
+      <a href="http://github.com/szabyg/vie-annotation-bookmarklet/zipball/master">
+        <img border="0" width="90" src="http://github.com/images/modules/download/zip.png"></a>
+      <a href="http://github.com/szabyg/vie-annotation-bookmarklet/tarball/master">
+        <img border="0" width="90" src="http://github.com/images/modules/download/tar.png"></a>
+    </div>
+
+    <h1><a href="http://github.com/szabyg/vie-annotation-bookmarklet">vie-annotation-bookmarklet</a>
+      <span class="small">by <a href="http://github.com/szabyg">szabyg</a></span></h1>
+
+    <div class="description">
+      VIE-based, stanbol-connected enhancer bookmarklet based on annotate.js
+    </div>
+
+    <h2>Install</h2>
+	JavaScript Root: <input id="appRoot" value="http://szabyg.github.com/vie-annotation-bookmarklet/" size="60"/><br/>
+    Stanbol uri: <input id="stanbol-uri" value="http://dev.iks-project.eu/stanbolsnml" size="60"/><br/>
+    Bookmarklet label: <input id="label" value="Stanbol Annotate" size="60"/><br/>
+    Default CSS Selector: <input id="css-selector" value="[descr], #content, .content, .text" size="60"/><br/>
+	LMF resource uri: <input id="lmf-uri" value="http://labs.newmedialab.at/ORF" size="60"/><br/>
+	Loader URI: <input id="loaderURI" value="http://labs.newmedialab.at/ORF/orf/bookmarklet/" size="60"/><br/>
+    Configurable CSS selector:
+    <label><input type="radio" name="css" value="manual" id="cssManual" /> on</label>
+    <label><input type="radio" name="css" value="auto" id="cssAuto" checked/> off</label>
+    <script>
+        function createBookmarklets (){
+            // var appRoot = window.location.origin + window.location.pathname + "/";
+            
+            var bookmarkletConfig = {
+            	// distinguish between 
+            	// (1) the application root which targets to the jQuery-Scriptsand the
+                appRoot: document.getElementById("appRoot").value, // window.location.href + "/",
+            	// (2) glue between the jQuery & the bookmarklet, e.g. the loader.js & activate.js
+            	loaderUri : document.getElementById("loaderURI").value,
+            	// (3) the stanbol uri
+                stanbolUri: document.getElementById("stanbol-uri").value,
+                // it is good the have the possibility to configure the LMF base uri
+				lmfBaseUri: document.getElementById("lmf-uri").value,
+                defaultCssSelector: document.getElementById("css-selector").value,
+                cssPopup: document.getElementById("cssManual").checked
+            }
+            var label = document.getElementById("label").value;
+            var link =
+                "<a class='bookmarklet' href='" +
+                    "javascript:window.bookmarkletConfig=" +
+                        JSON.stringify(bookmarkletConfig) + ";" +
+                    'var e=document.createElement("script");' +
+                    'e.setAttribute("language","javascript");' +
+                    'e.setAttribute("src","' + bookmarkletConfig.loaderUri +
+                    'loader.js?"+Math.random().toString().substring(2));' +
+                    'document.body.appendChild(e);' +
+                    'void(0);' +
+                "'>" + label + "</a>";
+            console.info(link);
+            var res = ""
+            res +=  "<br/><br/>Bookmarklet: ";
+            res +=  link;
+            document.getElementById("bookmarklets").innerHTML = res;
+        }
+    </script>
+    <div id="bookmarklets"></div>
+    <br/>
+    <button onclick="javascript:createBookmarklets()">Generate Bookmarklet</button>
+
+    <ol>
+        <li>Go to your web browser (Chrome and Firefox are tested so far)</li>
+        <li>Make sure your bookmark toolbar is visible </li>
+        <li>Go to http://dev.iks-project.eu/demos/vie-annotation-bookmarklet/</li>
+        <li>Customize Stanbol url and label </li>
+        e.g. url: `http://dev.iks-project.eu/stanbolfull` label: `Stanbol Full`</li>
+        would use the stable launcher on our server.</li>
+        <li>Click 'Generate Bookmarklet'</li>
+        <li>Drag-and-drop the created link on your Browser Link-toolbar</li>
+    </ol>
+    <h2>License</h2>
+    <p>The vie annotation bookmarklet is a free software project, available under the MIT license.</p>
+    <h2>Authors</h2>
+    <p>Szaby Grünwald (www.github.com/szabyg)</p>
+
+
+    <h2>Download</h2>
+    <p>
+      You can download this project in either
+      <a href="http://github.com/szabyg/vie-annotation-bookmarklet/zipball/master">zip</a> or
+      <a href="http://github.com/szabyg/vie-annotation-bookmarklet/tarball/master">tar</a> formats.
+    </p>
+    <p>You can also clone the project with <a href="http://git-scm.com">Git</a>
+      by running:
+      <pre>$ git clone git://github.com/szabyg/vie-annotation-bookmarklet</pre>
+    </p>
+    <h2>Testing area</h2>
+    <p>Click the link you just created above and make sure #content or .content gets annotated</p>
+    <div id="#content" class="content">
+        <h3>Notable citizens of Salzburg</h3>
+
+
+
+Mozart's birthplace at Getreidegasse 9
+The composer Wolfgang Amadeus Mozart was born and raised in Salzburg and worked for the archbishops from 1769 to 1781. His house of birth and residence are tourist attractions. His family is buried in a small church graveyard in the old town, and there are many monuments to "Wolferl" in the city.
+The composer Johann Michael Haydn, brother of the composer Joseph Haydn. His works were admired by Mozart and Schubert. He was also the teacher of Carl Maria von Weber and Anton Diabelli and is known for his sacred music.
+Christian Doppler, an expert on acoustic theory, was born in Salzburg. He is most known for his discovery of the Doppler effect.
+Josef Mohr was born in Salzburg. Together with Franz Gruber, he composed and wrote the text for "Silent Night". As a priest in neighbouring Oberndorf he performed the song for the first time in 1818.
+King Otto of Greece was born Prince Otto Friedrich Ludwig of Bavaria at the Palace of Mirabell, a few days before the city reverted from Bavarian to Austrian rule.
+Noted writer Stefan Zweig lived in Salzburg for about 15 years, until 1934.
+Maria Von Trapp (later Maria Trapp) and her family lived in Salzburg until they fled to the United States following the Nazi takeover.
+Salzburg is the birthplace of Hans Makart, a 19th-century Austrian painter-decorator and national celebrity. Makartplatz (Makart Square) is named in his honour.
+Writer Thomas Bernhard was raised in Salzburg and spent part of his life there.
+Herbert von Karajan was a notable musician and conductor. He was born in Salzburg and died in 1989 in neighbouring Anif.
+Anthropologist Udo Ludwig was born here.
+Roland Ratzenberger, Formula One driver, was born in Salzburg. He died in practice for the 1994 San Marino Grand Prix.
+Joseph Leutgeb, French horn virtuoso
+Klaus Ager, the distinguished contemporary composer and Mozarteum professor, was born in Salzburg on 10 May 1946.
+Alex Jesaulenko, Australian rules footballer and AFL Hall of Fame player with "Legend" status was born in Salzburg on 2 August 1945.
+Georg Trakl is one of the most important voices in German literature and he was also born in Salzburg.
+Theodor Herzl worked in the courts in Salzburg during the year after he earned his law degree in 1884.[6]
+    </div>
+    <div class="footer">
+      get the source code on GitHub : <a href="http://github.com/szabyg/vie-annotation-bookmarklet">szabyg/vie-annotation-bookmarklet</a>
+    </div>
+
+  </div>
+
+  
+</body>
+</html>

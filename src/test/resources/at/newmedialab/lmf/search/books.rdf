@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:foaf="http://xmlns.com/foaf/0.1/"
+	xmlns:owl="http://www.w3.org/2002/07/owl#"
+	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
+
+    <rdf:Description rdf:about="http://localhost/resource/Book">
+        <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
+        <rdfs:label>Book</rdfs:label>
+    </rdf:Description>
+
+    <rdf:Description rdf:about="http://localhost/resource/A+Game+of+Thrones">
+	<rdf:type rdf:resource="http://localhost/resource/Book"/>
+	<dc:identifer>553573403</dc:identifer>
+	<dc:title>A Game of Thrones</dc:title>
+	<dc:creator>George R.R. Martin</dc:creator>
+	<dc:subject>fantasy</dc:subject>
+	<owl:sameAs rdf:resource="http://dbpedia.org/resource/A_Game_of_Thrones"/>
+	<foaf:maker rdf:resource="http://dbpedia.org/resource/George_R._R._Martin"/>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost/resource/A+Clash+of+Kings">
+	<rdf:type rdf:resource="http://localhost/resource/Book"/>
+	<dc:identifer>553579908</dc:identifer>
+	<dc:title>A Clash of Kings</dc:title>
+	<dc:creator>George R.R. Martin</dc:creator>
+	<dc:subject>fantasy</dc:subject>
+	<owl:sameAs rdf:resource="http://dbpedia.org/resource/A_Clash_of_Kings"/>
+	<foaf:maker rdf:resource="http://dbpedia.org/resource/George_R._R._Martin"/>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost/resource/A+Storm+of+Swords">
+	<rdf:type rdf:resource="http://localhost/resource/Book"/>
+	<dc:identifer>055357342X</dc:identifer>
+	<dc:title>A Storm of Swords</dc:title>
+	<dc:creator>George R.R. Martin</dc:creator>
+	<dc:subject>fantasy</dc:subject>
+	<owl:sameAs rdf:resource="http://dbpedia.org/resource/A_Storm_of_Swords"/>
+	<foaf:maker rdf:resource="http://dbpedia.org/resource/George_R._R._Martin"/>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost/resource/Foundation">
+	<rdf:type rdf:resource="http://localhost/resource/Book"/>
+	<dc:identifer>553293354</dc:identifer>
+	<dc:title>Foundation</dc:title>
+	<dc:creator>Isaac Asimov</dc:creator>
+	<dc:subject>scifi</dc:subject>
+	<owl:sameAs rdf:resource="http://dbpedia.org/resource/Foundation_%28novel%29"/>
+	<foaf:maker rdf:resource="http://dbpedia.org/resource/Isaac_Asimov"/>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost/resource/The+Black+Company">
+	<rdf:type rdf:resource="http://localhost/resource/Book"/>
+	<dc:identifer>812521390</dc:identifer>
+	<dc:title>The Black Company</dc:title>
+	<dc:creator>Glen Cook</dc:creator>
+	<dc:subject>fantasy</dc:subject>
+	<owl:sameAs rdf:resource="http://dbpedia.org/resource/The_Black_Company_%28novel%29"/>
+	<foaf:maker rdf:resource="http://dbpedia.org/resource/Glen_Cook"/>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost/resource/Ender%27s+Game">
+	<rdf:type rdf:resource="http://localhost/resource/Book"/>
+	<dc:identifer>812550706</dc:identifer>
+	<dc:title>Ender's Game</dc:title>
+	<dc:creator>Orson Scott Card</dc:creator>
+	<dc:subject>scifi</dc:subject>
+	<owl:sameAs rdf:resource="http://dbpedia.org/resource/Ender%27s_Game"/>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost/resource/Jhereg">
+	<rdf:type rdf:resource="http://localhost/resource/Book"/>
+	<dc:identifer>441385532</dc:identifer>
+	<dc:title>Jhereg</dc:title>
+	<dc:creator>Steven Brust</dc:creator>
+	<dc:subject>fantasy</dc:subject>
+	<owl:sameAs rdf:resource="http://dbpedia.org/resource/Jhereg_%28novel%29"/>
+	<foaf:maker rdf:resource="http://dbpedia.org/resource/Steven_Brust"/>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost/resource/Nine+Princes+In+Amber">
+	<rdf:type rdf:resource="http://localhost/resource/Book"/>
+	<dc:identifer>380014300</dc:identifer>
+	<dc:title>Nine Princes In Amber</dc:title>
+	<dc:creator>Roger Zelazny</dc:creator>
+	<dc:subject>fantasy</dc:subject>
+	<owl:sameAs rdf:resource="http://dbpedia.org/resource/Nine_Princes_in_Amber"/>
+	<foaf:maker rdf:resource="http://dbpedia.org/resource/Roger_Zelazny"/>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost/resource/The+Book+of+Three">
+	<rdf:type rdf:resource="http://localhost/resource/Book"/>
+	<dc:identifer>805080481</dc:identifer>
+	<dc:title>The Book of Three</dc:title>
+	<dc:creator>Lloyd Alexander</dc:creator>
+	<dc:subject>fantasy</dc:subject>
+	<owl:sameAs rdf:resource="http://dbpedia.org/resource/The_Book_of_Three"/>
+	<foaf:maker rdf:resource="http://dbpedia.org/resource/Lloyd_Alexander"/>
+</rdf:Description>
+
+<rdf:Description rdf:about="http://localhost/resource/The+Black+Cauldron">
+	<rdf:type rdf:resource="http://localhost/resource/Book"/>
+	<dc:identifer>080508049X</dc:identifer>
+	<dc:title>The Black Cauldron</dc:title>
+	<dc:creator>Lloyd Alexander</dc:creator>
+	<dc:subject>fantasy</dc:subject>
+	<owl:sameAs rdf:resource="http://dbpedia.org/resource/The_Black_Cauldron_%28novel%29"/>
+	<foaf:maker rdf:resource="http://dbpedia.org/resource/Lloyd_Alexander"/>
+</rdf:Description>
+
+</rdf:RDF>

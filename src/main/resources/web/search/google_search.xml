@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright (C) 2013 Salzburg Research.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+         http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/"
+                       xmlns:moz="http://www.mozilla.org/2006/browser/search/">
+  <ShortName>LMF Search</ShortName>
+  <Description>This is the search for the Linked Media Framework</Description>
+  <InputEncoding>UTF-8</InputEncoding>
+  <Image width="16" height="16" type="image/x-icon">http://localhost:8080/KiWi2/solr/ui/img/icon-small.ico</Image>
+  <Url type="text/html" method="GET" template="http://localhost:8080/KiWi2/solr/ui/index.html">
+    <Param name="q" value="{searchTerms}"/>
+    <!--<Param name="lang" value="{language?}"/>-->
+  </Url>
+  <Url type="application/x-suggestions+json" template="suggestionURL"/>
+  <moz:SearchForm>http://localhost:8080/KiWi2/solr/ui/index.html</moz:SearchForm>
+</OpenSearchDescription>

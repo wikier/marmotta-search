@@ -1,0 +1,611 @@
+/**
+ * Copyright (C) 2013 Salzburg Research.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+/* Foundation v2.2 http://foundation.zurb.com */
+/* Artfully masterminded by ZURB  */
+
+/* -------------------------------------------------- 
+   Table of Contents
+-----------------------------------------------------
+:: Shared Styles
+:: Page Name 1
+:: Page Name 2
+*/
+
+
+/* -----------------------------------------
+   Shared Styles
+----------------------------------------- */
+.maincontent {
+    position:relative;
+}
+
+.cf:before, .cf:after{
+    content:"";
+    display:table;
+}
+ 
+.cf:after{
+    clear:both;
+}
+ 
+.cf{
+    zoom:1;
+}    
+
+/* Form wrapper styling */
+.form-wrapper {
+    width: 450px;
+    padding: 15px;
+    margin: 150px auto 50px auto;
+    background: #444;
+    background: rgba(0,0,0,.2);
+    border-radius: 10px;
+    box-shadow: 0 1px 1px rgba(0,0,0,.4) inset, 0 1px 0 rgba(255,255,255,.2);
+}
+ 
+/* Form text input */
+ 
+.form-wrapper input {
+    width: 330px;
+    height: 20px;
+    padding: 10px 5px;
+    float: left;   
+    font: bold 15px 'lucida sans', 'trebuchet MS', 'Tahoma';
+    border: 0;
+    background: #eee;
+    border-radius: 3px 0 0 3px;     
+}
+ 
+.form-wrapper input:focus {
+    outline: 0;
+    background: #fff;
+    box-shadow: 0 0 2px rgba(0,0,0,.8) inset;
+}
+ 
+.form-wrapper input::-webkit-input-placeholder {
+   color: #999;
+   font-weight: normal;
+   font-style: italic;
+}
+ 
+.form-wrapper input:-moz-placeholder {
+    color: #999;
+    font-weight: normal;
+    font-style: italic;
+}
+ 
+.form-wrapper input:-ms-input-placeholder {
+    color: #999;
+    font-weight: normal;
+    font-style: italic;
+}   
+ 
+/* Form submit button */
+.form-wrapper button {
+    overflow: visible;
+    position: relative;
+    float: right;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+    height: 40px;
+    width: 110px;
+    font: bold 15px/40px 'lucida sans', 'trebuchet MS', 'Tahoma';
+    color: #fff;
+    text-transform: uppercase;
+    background: #d83c3c;
+    border-radius: 0 3px 3px 0;     
+    text-shadow: 0 -1px 0 rgba(0, 0 ,0, .3);
+}  
+   
+#searchbutton:hover{    
+    background: #45abd5;
+}  
+   
+#searchbutton:active,
+#searchbutton:focus{  
+    background: #2c728f;
+    outline: 0;
+    
+}
+ 
+#searchbutton:before { /* left arrow */
+    content: '';
+    position: absolute;
+    border-width: 8px 8px 8px 0;
+    border-style: solid solid solid none;
+    border-color: transparent #2284ac transparent;
+    top: 12px;
+    left: -6px;
+}
+ 
+#searchbuttonn:hover:before{
+    border-right-color: #45abd5;
+}
+ 
+#searchbutton:focus:before,
+#searchbuttonn:active:before{
+        border-right-color: #2284ac;
+}     
+ 
+#searchbutton:-moz-focus-inner { /* remove extra button spacing for Mozilla Firefox */
+    border: 0;
+    padding: 0;
+}    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.sidebar {
+    
+}
+
+#logo img {
+    margin-top:4.5rem;    
+}
+
+
+.searchbar {
+
+}
+
+
+
+#search input.nice {
+    font-size: 13px;
+    outline: medium none !important;
+    padding: 6px 3px 4px;
+    border: 1px solid #BBBBBB;
+    border-radius: 2px 2px 2px 2px;
+    
+    
+}
+
+#text_input_div {
+  
+    border-radius: 2em 0 0 2em;
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+    padding: 3px 0 3px 3pxx;
+    float:left;
+    width:80%;
+    
+}
+
+input.input-text {
+    margin-bottom:0;
+}
+
+input {
+}
+
+ form.search{
+    background: none repeat scroll 0 0 rgba(0, 0, 0, 0.2);
+    border-radius: 10px 10px 10px 10px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.4) inset, 0 1px 0 rgba(255, 255, 255, 0.2);
+    padding: 8px;
+    margin:0;
+}
+
+
+
+#searchfield {
+   background: none repeat scroll 0 0 #EEEEEE;
+    border: 0 none;
+    border-radius: 3px 0 0 3px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2) inset;
+    outline: medium none;
+    padding: 6px 6px 6px 8px;
+        width:98%;
+        height:28px;
+
+}
+
+#searchfield:focus {
+       background: none repeat scroll 0 0 #ffffff;
+    box-shadow: 0 0 2px rgba(44, 114, 143, 0.8) inset;
+    outline:0 none;
+
+}
+
+#searchbutton {
+    width:20%;
+    background: none repeat scroll 0 0 #2284ac;
+    border: 0 none;
+    border-radius: 0 3px 3px 0;
+    color: #FFFFFF;
+    cursor: pointer;
+    font: bold 15px/40px 'lucida sans','trebuchet MS','Tahoma';
+    overflow: visible;
+    padding: 0;
+    position: relative;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.3);
+    text-transform: uppercase;
+}
+
+.searchhead {
+    background:#f39200;
+    padding-bottom:10px;
+    margin-bottom:0;
+}
+/*
+.footer {
+    height:20px;
+background: none repeat scroll 0 0 #F7F7F7;
+    border: 1px solid rgba(147, 184, 189, 0.8);
+    border-radius: 5px 5px 5px 5px;
+    box-shadow: 0 2px 5px rgba(105, 108, 109, 0.7), 0 0 8px 5px rgba(208, 223, 226, 0.4) inset;
+}
+*/
+
+
+#topbar {
+ 
+   background: url("../images/header.png") repeat scroll 0 0 #000;
+    color: #FAFDFA;
+   
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.pagination {
+    
+}
+
+
+.searchicon {
+    background: url(../images/serachicon.png) no-repeat ;
+    float: left;
+    height: 65px;
+    margin-top: 0;
+    width: 65px;
+    
+}
+
+.header {
+    padding:10px;
+    
+}
+/* -----------------------------------------
+   Facets
+----------------------------------------- */
+.facet_list  nav li{
+    margin: 0 0 3px;
+    padding: 2px 0;
+    line-height: 2.0;
+}
+
+
+
+ul.facet_list li.checked a {
+    color:#4A87AF;
+    cursor: pointer;
+    font-size: 1.3rem;
+    line-height: 1;
+    padding-right: 15px;
+    padding-left:8px;
+    position: relative;
+    text-decoration: none;
+    z-index: 1;
+
+    
+}
+
+ul.facet_list li.notchecked a{
+    color:#4A87AF;
+    cursor: pointer;
+    font-size: 1.2rem;
+    line-height: 1;
+    padding-right: 15px;
+    padding-left:8px;
+    position: relative;
+    text-decoration: none;
+    z-index: 1;
+    
+}
+
+.facNum {
+     float: right;
+    margin-right: 6px;
+    margin-top: 2px;
+    color:black;
+    
+}
+
+.checkbox {
+    background: url(../images/checkbox_yes.png) no-repeat -0 0;
+     height: 15px;
+    margin-top: 0;
+    width: 15px;
+    float:left;
+}
+
+li.notchecked .checkbox {
+    background: url(../images/checkbox_no.png) no-repeat -0 0;
+     height: 15px;
+    margin-top: 0;
+    width: 15px;
+    float:left;
+    
+}
+/* -----------------------------------------
+   Horizontal Facets (Active Filters)
+----------------------------------------- */
+ul.horizontalfacets {
+    overflow:hidden;
+    text-align:left;
+    
+    
+}
+
+ul.horizontalfacets li {
+    cursor: pointer;
+    font-size: 13px;
+    line-height: 1;
+    padding-right: 5px;
+    position: relative;
+    text-decoration: none;
+    z-index: 1;
+    float:left;
+            vertical-align: bottom;
+
+    
+}
+
+ul.horizontalfacets li a.removeall {
+   font-weight: bold;
+   font-size:1.3rem;
+
+}
+ul.horizontalfacets li a {
+    font-size: 1.2rem;
+
+}
+
+
+span.facetdelete {
+    background: url(../images/facetdelete.jpg);
+      float: right;
+    height: 13px;
+    margin: 2px 0 0;
+    width: 13px;
+}
+.horizontalfacetlabel {
+    float:left;
+}
+
+a.activefacet {
+    margin: 0 10px;
+    float:left;
+    font-size:1.5rem;
+}
+
+h5.noactivefilter {
+    color:grey;    
+    
+}
+   
+
+/* -----------------------------------------
+   Style of search result items
+----------------------------------------- */
+.sortbar {
+background: url("../images/background.png") repeat scroll 0 0 transparent;
+border-radius: 3px;
+padding: 10px 0;
+}
+
+
+form.sorting label {
+    float:left;
+    padding-right:3px;
+    
+}
+
+select {
+margin:0;
+}
+
+form.sorting {
+    margin:0;
+    vertical-align: middle;
+}
+
+.results img {
+   background: none repeat scroll 0 0 #F5F5F5;
+    border: 1px solid #DDDDDD;
+    padding: 3px;
+    margin-right:2%;
+    
+    
+}
+
+ .dd  {
+    
+    height: 84px;
+    position: relative;
+    width: 148px;
+
+    display: inline;
+    float: left;
+    padding: 3px;
+    margin-right:2.3%;
+}
+
+
+
+.video {
+    background: url("../images/play.png") no-repeat scroll 5px 7px transparent;
+    height:50px;
+    width:50px;
+    position:absolute;
+    right: 2px;
+    bottom: 2px;
+}
+
+.photo {
+    background: url("../images/photo.png") no-repeat scroll 1px 7px transparent;
+    height:50px;
+    width:50px;
+    position:absolute;
+    right: 2px;
+    bottom: 2px;
+}
+
+.results li {
+    border-bottom: 1px solid #ECECEC;
+   /*
+    background-color: #FFFFFF;
+    box-shadow: 1px 1px 1px 1px #E5EAED;
+    clear: both; */
+
+    
+}
+
+
+ul#docs div {
+    radius: 10px;
+    padding:5px;
+    margin:5px;
+    background: none repeat scroll 0 0 rgba(255, 255, 255, 0.9);
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);
+    padding: 12px;
+}
+ul#docs div.result_loader {
+    background: url("../images/ajax-loader.gif") no-repeat scroll center center transparent;
+    box-shadow: none;
+    min-height: 128px;
+}
+.alles {
+background: none repeat scroll 0 0 #FFFFFF;
+    box-shadow: 0 5px 5px rgba(0, 0, 0, 0.3);
+    padding: 10px;
+
+}
+
+.meta {
+    color:#000;
+}
+
+ p.metainfo {
+    margin-bottom:0;    
+}
+
+.metainfo li {
+    display:inline;
+    border:none;
+
+}
+
+.metainfo li:after {
+    content: " | ";
+}
+
+.metainfo li:last-child:after {
+    content:" ";
+}
+
+.preview {
+    margin-bottom:5px;
+}
+
+.supertitle  {
+    margin:0;
+    line-height: 14px;
+    
+}
+
+.supertitle a{
+    
+    font-size: 1.2rem;
+    color:#4A87AF;
+    
+}
+
+.title a{
+    color:#000;
+}
+
+
+
+/* -----------------------------------------
+   Autocomplete Widget
+----------------------------------------- */
+.ac_results {
+padding: 0px;
+border: 1px solid black;
+background-color: white;
+overflow: hidden;
+z-index: 99999;
+}
+.ac_results ul {
+width: 100%;
+list-style-position: outside;
+list-style: none;
+padding: 0;
+margin: 0;
+}
+.ac_results li {
+margin: 0px;
+padding: 2px 5px;
+cursor: default;
+display: block;
+/*
+if width will be 100% horizontal scrollbar will apear
+when scroll mode will be used
+*/
+/*width: 100%;*/
+font: menu;
+font-size: 12px;
+/*
+it is very important, if line-height not setted or setted
+in relative units scroll will be broken in firefox
+*/
+line-height: 16px;
+overflow: hidden;
+}
+.ac_loading {
+background: white url('indicator.gif') right center no-repeat;
+}
+.ac_odd {
+background-color: #eee;
+}
+.ac_over {
+background-color: #0A246A;
+color: white;
+} 
+
+/* -----------------------------------------
+   Pager Widget
+----------------------------------------- */
+
+#pager-header {
+    font-size:2.5rem;
+    margin-bottom:15px;
+    
+}

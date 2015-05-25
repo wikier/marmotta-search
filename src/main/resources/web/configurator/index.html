@@ -1,0 +1,269 @@
+<!--
+
+    Copyright (C) 2013 Salzburg Research.
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+         http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8" />
+
+	<!-- Set the viewport width to device width for mobile -->
+	<!--<meta name="viewport" content="width=device-width" />-->
+
+	<title>SearchUI</title>
+  
+	<!-- Included CSS Files -->
+    <link rel="stylesheet" href="css/pageguide.css">
+
+	<link rel="stylesheet" href="css/foundation.css">
+	<link rel="stylesheet" href="css/app.css">
+	<link rel="stylesheet" href="css/accordeon.css">
+    <link rel="stylesheet" href="css/editor.css">
+
+
+	<!-- AJAX Solr -->
+
+    <script src="js/jquery.min.js"></script>
+
+    <script type="text/javascript" src="js/search.js"></script>
+    <script type="text/javascript" src="ajax-solr/core/Core.js"></script>
+    <script type="text/javascript" src="ajax-solr/core/AbstractManager.js"></script>
+    <script type="text/javascript" src="ajax-solr/managers/Manager.jquery.js"></script>
+    <script type="text/javascript" src="ajax-solr/core/Parameter.js"></script>
+    <script type="text/javascript" src="ajax-solr/core/ParameterStore.js"></script>
+    <script type="text/javascript" src="ajax-solr/core/AbstractWidget.js"></script>
+    <script type="text/javascript" src="ajax-solr/core/AbstractParamWidget.js"></script>
+    <script type="text/javascript" src="ajax-solr/widgets/jquery/ResultWidget.js"></script>
+    <script type="text/javascript" src="ajax-solr/helpers/jquery/ajaxsolr.theme.js"></script>
+    <script type="text/javascript" src="js/search.theme.js"></script>
+
+    <script type="text/javascript" src="ajax-solr/widgets/jquery/PagerWidget.js"></script>
+    <script type="text/javascript" src="ajax-solr/core/AbstractFacetWidget.js"></script>
+    <script type="text/javascript" src="ajax-solr/widgets/jquery/TagcloudWidget.js"></script>
+    <script type="text/javascript" src="ajax-solr/widgets/jquery/ColorWidget.js"></script>
+    <script type="text/javascript" src="ajax-solr/widgets/jquery/CurrentSearchWidget.js"></script>
+    <script type="text/javascript" src="widgets/InputWidget.js"></script>
+    <script type="text/javascript" src="ajax-solr/widgets/jquery/DropDownParamWidget.js"></script>
+
+    <script type="text/javascript" src="js/jquery.livequery.js"></script>
+    <script type="text/javascript" src="js/strftime.js"></script>
+
+    <script type="text/javascript" src="js/configurator.js"></script>
+    <script type="text/javascript" src="js/storage/LocalStorage.js"></script>
+    <script type="text/javascript" src="js/storage/LMFStorage.js"></script>
+
+    <script type="text/javascript" src="init.js"></script>
+
+</head>
+<body>
+<!-- Top Bar -->
+		<div id="topbar" class="container">
+			
+				<div class="container header">
+						<div class="row">
+							
+
+								<div class="four columns">
+
+										<img class="brand" src="images/sr_schriftzug_weiss.png">
+
+								</div>
+								<div class="eight columns">
+										<div id="search" class="row searchbar">
+												<form class="search">
+													<div id="text_input_div">
+                                                        <input title="insert query text" id="searchfield" class="input-ext small " type="text" autocomplete="off"/>
+                                                        <ul id="search_suggestionbox" style="display: none">
+                                                        </ul>
+
+                                                    </div>
+													<button  id="searchbutton" class="small blue nice button radius">Search</button>
+												</form>
+											</div>
+
+										</div>
+										
+								</div>
+						</div>
+						
+					
+					
+				</div>
+		</div>
+		
+		<div class="container content maincontent">
+			<div id="search_edit_button" onclick="edit()" disabled="disabled" >
+				<div>
+					<span id="editmode">Enter the edit mode</span>
+				</div>
+			</div>
+            <div id="search_delete_button" onclick="del()" >
+                <div>
+                    <span>Delete core</span>
+                </div>
+            </div>
+		
+			<div class="row alles">
+	
+				<div class="row">
+
+						<div class="four columns sidebar">
+
+							<div class="border">
+								<section class="ac-container" id="widget_box_container">
+                                    <!-- widgets -->
+								</section>
+							
+							</div>
+						</div>
+					
+					<div class="eight columns">
+						<div class="border">
+							<div class="row" id="search_reaults_div">
+								<h5>Active Filters</h5>
+								<div class="panel">
+
+										<ul id="selection" class="horizontalfacets">
+												
+												
+										</ul>
+								</div>
+								
+								<div class="row">
+											
+												<div id="pager-header"></div>
+										
+								</div>
+								<div class="row	sortbar">
+									
+									
+										<div class="three columns offset-by-four">
+											<form class="sorting">
+												
+												<span style="float:left; padding-right:4px;">results/page</span>
+												<select id="pageSize" class="customDropdown">
+													<option>10</option>
+													<option>15</option>
+													<option>25</option>
+												</select>
+												
+											</form>
+										</div>
+										<div class="four columns">
+											<form class="sorting"><span style="float:left; padding-right:4px;">sort by</span>
+												<select id="sortResults" class="sort">
+													<option>Relevanz</option>
+													<option>Datum aufsteigend</option>
+													<option>Datum absteigend</option>
+												</select>
+												
+											</form>
+										</div>
+								</div>								
+							</div>
+							<div class="row" id="result_row" style="position:relative">
+								<ul class="results">
+										<ul id="docs"></ul>			
+								</ul>
+			
+		
+							</div>
+						</div>
+						<div class="row">
+								<div class="six columns centered">
+										<ul id="pager" class="pagination"></ul>
+										
+										
+								</div>
+						</div>
+							
+						</div>
+					</div>
+				</div>
+		
+			
+		</div>
+
+		
+
+	</div>
+	<!-- container -->
+<ul id="tlyPageGuide" data-tourtitle="Learn more about the UI">
+	<li class="tlypageguide_left" data-tourtarget=".brand">
+		<div>
+			The research technology organisation Salzburg Research specializes in applied research and development in the field of information and communication technologies (ICT)
+			and New Media. Regional as well as national and international business partners benefit from the high-quality expertise our team of interdisciplinary
+			and globally renowned experts has to offer. Feel free to visit our website: <a style="font-weight:bold; color:rgba(247, 0, 119, 0.95);" href="http://www.salzburgresearch.at">Salzburgresearch.at</a>
+		</div>
+	</li>
+	<li class="tlypageguide_bottom" data-tourtarget="#search_edit_button">
+		<div>
+			By 'pressing' this button you can enter the 'editing mode' in which you are able to customize the modules (e.g. <em>facets</em>, <em>style of search results</em>) of this search interface. After making your customizations just 'click' a second time
+			on the button in order to safe your settings.
+		</div>
+	</li>
+	<li class="tlypageguide_right" data-tourtarget=".search">
+		<div>
+			You are able to search for any term you want. We support your search by offering autocompletion while you are typing.
+		</div>
+	</li>
+	<li class="tlypageguide_left" data-tourtarget="#widget_box_container">
+		<div>
+			By 'selecting' and 'deselecting' you can specify your search. Each activated filter/facet is then listed in the 'active filters' section (#5).
+		</div>
+	</li>
+	<li class="tlypageguide_right" data-tourtarget=".panel">
+		<div>
+			Any facet/filter that you have selected is listed in this section. By 'clicking' on any of these listed items you can 'exclude' them again from your current search.
+		</div>
+	</li>
+	
+</ul>
+
+
+
+
+	<!-- Included JS Files -->
+
+	<script src="js/modernizr.foundation.js"></script>
+	<script src="js/foundation.js"></script>
+	<script src="js/app.js"></script>
+	<script src="js/customforms.js"></script>
+	<script type="text/javascript" src="js/pageguide.js"></script>
+	<script type="text/javascript">
+	    $(document).ready(function() {
+		tl.pg.init();
+	    });
+	</script>
+		<script type="text/javascript">
+					$(document).ready(function() {
+					    $("#search_edit_button").animate({ right: "-120px" }, 200);
+                        $("#search_delete_button").animate({ right: "-120px" }, 200);
+					 });
+
+
+		</script>
+
+
+	
+
+     <div id="background-black" style="display:none;width:100%;height:100%;background-color:black;opacity:0.7;z-index:1000;position:absolute;top:0;left:0">
+     </div>
+</body>
+
+</html>
+
