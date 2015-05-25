@@ -18,7 +18,7 @@ package at.newmedialab.lmf.search.filters;
 import at.newmedialab.lmf.search.api.cores.SolrCoreService;
 import com.google.common.io.ByteStreams;
 import com.google.common.io.Files;
-import com.google.common.io.Resources;
+import org.apache.commons.io.IOUtils;
 import org.apache.marmotta.platform.core.api.config.ConfigurationService;
 import org.apache.marmotta.platform.core.api.modules.MarmottaHttpFilter;
 import org.apache.marmotta.platform.core.util.CDIContext;
@@ -40,10 +40,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLDecoder;
@@ -315,8 +312,8 @@ public class LMFSearchFilter implements MarmottaHttpFilter {
                     log.error("could not create SOLR home directory; SOLR will not work properly");
                 }
             }
-        } catch (IOException ex) {
-            log.error("error while trying to setup SOLR home directory: {}", ex.getMessage());
+        } catch (IOException e) {
+            log.error("error while trying to setup SOLR home directory: {}", e.getMessage());
         }
 
     }
@@ -336,12 +333,12 @@ public class LMFSearchFilter implements MarmottaHttpFilter {
     private void unpackSolrHome(File directory) throws IOException {
         String version = configurationService.getStringConfiguration("kiwi.version");
 
-        URL url_zip = LMFSearchFilter.class.getResource("/lmf-solr-data.zip");
+        InputStream zip_is = LMFSearchFilter.class.getResourceAsStream("/lmf-solr-data.zip");
 
-        if (url_zip != null) {
+        if (zip_is  != null) {
             File tmp_zip = File.createTempFile("lmf-solr-data", ".zip");
 
-            Files.copy(Resources.newInputStreamSupplier(url_zip), tmp_zip);
+            IOUtils.copy(zip_is, new FileOutputStream(tmp_zip));
 
             ZipFile zipFile = new ZipFile(tmp_zip);
 

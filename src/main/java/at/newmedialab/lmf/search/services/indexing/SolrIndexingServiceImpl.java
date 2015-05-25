@@ -18,6 +18,7 @@ package at.newmedialab.lmf.search.services.indexing;
 import static org.apache.marmotta.commons.sesame.repository.ResourceUtils.getTypes;
 
 import java.io.StringReader;
+import java.net.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
@@ -31,9 +32,13 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Collections2;
+import org.apache.marmotta.commons.sesame.repository.ResourceUtils;
+import org.apache.marmotta.commons.sesame.transactions.model.TransactionData;
 import org.apache.marmotta.kiwi.model.rdf.KiWiResource;
 import org.apache.marmotta.kiwi.model.rdf.KiWiUriResource;
-import org.apache.marmotta.kiwi.transactions.model.TransactionData;
+import org.apache.marmotta.ldpath.backend.sesame.ContextAwareSesameConnectionBackend;
 import org.apache.marmotta.ldpath.backend.sesame.SesameConnectionBackend;
 import org.apache.marmotta.ldpath.exception.LDPathParseException;
 import org.apache.marmotta.ldpath.model.fields.FieldMapping;
@@ -46,12 +51,11 @@ import org.apache.marmotta.platform.core.qualifiers.event.Removed;
 import org.apache.marmotta.platform.core.qualifiers.event.Updated;
 import org.apache.marmotta.platform.core.qualifiers.event.transaction.AfterCommit;
 import org.apache.solr.common.SolrInputDocument;
-import org.openrdf.model.BNode;
-import org.openrdf.model.Resource;
+import org.openrdf.model.*;
 import org.openrdf.model.URI;
-import org.openrdf.model.Value;
 import org.openrdf.repository.RepositoryConnection;
 import org.openrdf.repository.RepositoryException;
+import org.openrdf.repository.RepositoryResult;
 import org.slf4j.Logger;
 
 import at.newmedialab.lmf.search.api.cores.SolrCoreService;
@@ -200,28 +204,44 @@ public class SolrIndexingServiceImpl extends WorkerServiceImpl<SolrCoreRuntime,S
             }
         }
 
-
-
         if (resource == null) return;
         final String coreName = runtime.getConfiguration().getName();
         final String rID = getResourceId(resource);
-
-        if (resource instanceof KiWiResource && ((KiWiResource) resource).isDeleted()) {
-            runtime.queueDeletion(rID);
-        }
 
         try {
             final RepositoryConnection connection = sesameService.getConnection();
             try {
                 connection.begin();
-                final SesameConnectionBackend backend;
-                if (program.getGraphs() != null) {
-                    final ContextAwareBackend cab = new ContextAwareBackend(connection, program.getGraphs());
-                    backend = cab;
-                } else {
-                    backend = SesameConnectionBackend.withConnection(connection);
+
+                //if (resource instanceof KiWiResource && ((KiWiResource) resource).isDeleted()) {
+                //    runtime.queueDeletion(rID);
+                //}
+                //FIXME: find a proper way to do this with the new api
+                boolean deleted = true;
+                RepositoryResult<Statement> statements = connection.getStatements(resource, null, null, false);
+                while (statements.hasNext()) {
+                    if (!ResourceUtils.isDeleted(connection, statements.next())) {
+                        deleted = false;
+                        break;
+                    }
+                }
+                if (deleted) {
+                    runtime.queueDeletion(rID);
                 }
 
+                final Resource[] contexts;
+                if (program.getGraphs().isEmpty()) {
+                    contexts = new Resource[0];
+                } else {
+                    contexts = Collections2.transform(program.getGraphs(), new Function<java.net.URI, URI>() {
+                        @Override
+                        public URI apply(java.net.URI in) {
+                            return connection.getValueFactory().createURI(in.toString());
+                        }
+                    }).toArray(new Resource[0]);
+                }
+
+                final SesameConnectionBackend backend = ContextAwareSesameConnectionBackend.withConnection(connection, contexts);
                 if (program.getFilter() != null && !program.getFilter().apply(backend, resource, Collections.singleton((Value) resource))) {
                     if (log.isDebugEnabled()) {
                         log.debug("({}) <{}> does not match filter '{}', ignoring", coreName, resource, program.getFilter().getPathExpression(backend));
@@ -259,7 +279,7 @@ public class SolrIndexingServiceImpl extends WorkerServiceImpl<SolrCoreRuntime,S
 
                 for (Resource type : getTypes(connection, resource)) {
                     if (type instanceof KiWiUriResource) {
-                        doc.addField("lmf.type", type.toString());
+                        doc.addField("lmf.type", type.stringValue());
                     }
                 }
 
@@ -355,7 +375,7 @@ public class SolrIndexingServiceImpl extends WorkerServiceImpl<SolrCoreRuntime,S
      */
     private static String getResourceId(Resource r) {
         if(r instanceof KiWiResource)
-            return ((KiWiResource)r).getId().toString();
+            return String.valueOf(((KiWiResource)r).getId());
         else
             return r.stringValue();
     }

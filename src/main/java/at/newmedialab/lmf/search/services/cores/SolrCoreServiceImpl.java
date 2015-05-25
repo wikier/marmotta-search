@@ -23,11 +23,11 @@ import at.newmedialab.lmf.util.solr.SuggestionRequestHandler;
 import at.newmedialab.lmf.util.solr.suggestion.params.SuggestionRequestParams;
 import com.google.common.collect.Lists;
 import com.google.common.io.ByteStreams;
-import com.google.common.io.Files;
-import com.google.common.io.Resources;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.marmotta.commons.sesame.filter.SesameFilter;
 import org.apache.marmotta.commons.sesame.filter.resource.UriPrefixFilter;
+import org.apache.marmotta.commons.util.HashUtils;
 import org.apache.marmotta.ldpath.exception.LDPathParseException;
 import org.apache.marmotta.ldpath.model.fields.FieldMapping;
 import org.apache.marmotta.ldpath.model.programs.Program;
@@ -41,7 +41,6 @@ import org.apache.marmotta.platform.core.model.filter.MarmottaLocalFilter;
 import org.apache.marmotta.platform.core.qualifiers.event.Created;
 import org.apache.marmotta.platform.core.qualifiers.event.Removed;
 import org.apache.marmotta.platform.core.qualifiers.event.Updated;
-import org.apache.marmotta.platform.core.util.KiWiIO;
 import org.apache.marmotta.platform.ldcache.model.filter.MarmottaNotCachedFilter;
 import org.apache.solr.core.CoreDescriptor;
 import org.apache.solr.core.SolrCore;
@@ -62,11 +61,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Event;
 import javax.enterprise.event.Observes;
 import javax.inject.Inject;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.StringReader;
-import java.net.URL;
+import java.io.*;
 import java.util.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -534,7 +529,7 @@ public class SolrCoreServiceImpl implements SolrCoreService {
         if (!conf.exists()) return false;
 
         String zsHash = null, zcHash = null;
-        ZipFile zf = new ZipFile(getSolrCoreZipTmpl(),ZipFile.OPEN_READ);
+        ZipFile zf = new ZipFile(getSolrCoreZipTmpl(), ZipFile.OPEN_READ);
         try {
             Enumeration<? extends ZipEntry> entries = zf.entries();
             while (entries.hasMoreElements()) {
@@ -542,9 +537,9 @@ public class SolrCoreServiceImpl implements SolrCoreService {
                 if (ze.isDirectory()) {
                     continue;
                 } else if ("conf/solrconfig-template.xml".equals(ze.getName())) {
-                    zcHash = KiWiIO.md5sum(zf.getInputStream(ze));
+                    zcHash = HashUtils.md5sum(zf.getInputStream(ze));
                 } else if ("conf/schema-template.xml".equals(ze.getName())) {
-                    zsHash = KiWiIO.md5sum(zf.getInputStream(ze));
+                    zsHash = HashUtils.md5sum(zf.getInputStream(ze));
                 }
             }
         } finally {
@@ -554,13 +549,13 @@ public class SolrCoreServiceImpl implements SolrCoreService {
         // Check if the solrconfig.xml was built from an up-to-date template
         File configTpl = new File(conf, "solrconfig-template.xml");
         if (!configTpl.exists()) return false;
-        String cHash = KiWiIO.md5sum(configTpl);
+        String cHash = HashUtils.md5sum(configTpl);
         if (cHash == null || !cHash.equals(zcHash)) return false;
 
         // Check if the schema.xml was built from an up-to-date template
         File schemaTpl = new File(conf, "schema-template.xml");
         if (!schemaTpl.exists()) return false;
-        String sHash = KiWiIO.md5sum(schemaTpl);
+        String sHash = HashUtils.md5sum(schemaTpl);
         if (sHash == null || !sHash.equals(zsHash)) return false;
 
 
@@ -614,9 +609,9 @@ public class SolrCoreServiceImpl implements SolrCoreService {
         if (solrCoreZipTmpl == null || !solrCoreZipTmpl.exists()) {
             solrCoreZipTmpl = File.createTempFile("lmf-solr-core", ".zip");
 
-            URL url_zip = SolrCoreServiceImpl.class.getResource("/lmf-solr-core.zip");
+            InputStream url_is = SolrCoreServiceImpl.class.getResourceAsStream("/lmf-solr-core.zip");
 
-            Files.copy(Resources.newInputStreamSupplier(url_zip), solrCoreZipTmpl);
+            IOUtils.copy(url_is, new FileOutputStream(solrCoreZipTmpl));
         }
         return solrCoreZipTmpl;
     }

@@ -232,7 +232,7 @@ public final class SolrCoreRuntime extends WorkerRuntime<SolrCoreConfiguration> 
 
     private static String getResourceId(Resource r) {
         if(r instanceof KiWiResource)
-            return ((KiWiResource)r).getId().toString();
+            return String.valueOf(((KiWiResource)r).getId());
         else
             return r.stringValue();
     }

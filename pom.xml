@@ -30,8 +30,8 @@
     <description>Marmotta module offering semantic search functionality using Apache Solr</description>
 
     <properties>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>1.7</maven.compiler.source>
+        <maven.compiler.target>1.7</maven.compiler.target>
         <project.build.encoding>UTF-8</project.build.encoding>
         <lmf.version>3.2.0-SNAPSHOT</lmf.version>
         <solr.version>4.3.1</solr.version>
