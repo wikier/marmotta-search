@@ -34,7 +34,7 @@
         <maven.compiler.target>1.7</maven.compiler.target>
         <project.build.encoding>UTF-8</project.build.encoding>
         <lmf.version>3.2.0-SNAPSHOT</lmf.version>
-        <solr.version>4.6.1</solr.version>
+        <solr.version>4.3.1</solr.version>
         <jetty.version>9.0.3.v20130506</jetty.version>
     </properties>
 
