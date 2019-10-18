@@ -35,7 +35,7 @@
         <project.build.encoding>UTF-8</project.build.encoding>
         <lmf.version>3.2.0-SNAPSHOT</lmf.version>
         <solr.version>4.3.1</solr.version>
-        <jetty.version>9.0.3.v20130506</jetty.version>
+        <jetty.version>9.4.21.v20190926</jetty.version>
     </properties>
 
     <dependencies>
